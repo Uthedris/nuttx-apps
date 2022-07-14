@@ -53,7 +53,7 @@ struct neo_config_s
  * Private Data
  ****************************************************************************/
 
-struct neo_config_s config =
+static struct neo_config_s config =
 {
   NULL,                    /* path  - default set in main */
   4,                       /* loop  - all colors 4 times  */
