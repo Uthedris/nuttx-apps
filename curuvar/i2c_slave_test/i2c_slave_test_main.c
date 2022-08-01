@@ -90,7 +90,7 @@ int i2c_callback( void * in_arg, size_t rx_len )
 // main
 // --------------------------------------------------------------------------
 
-int main( int in_argc, FAR char *in_argv[] )
+int main( int in_argc, char *in_argv[] )
 {
   printf( "Hello, world, from I2C slave test.\n" );
 
