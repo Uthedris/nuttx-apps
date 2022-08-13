@@ -1,0 +1,27 @@
+#
+# For a description of the syntax of this configuration file,
+# see the file kconfig-language.txt in the NuttX tools repository.
+#
+
+config CURUVAR_TEST_APP
+	tristate "Curuvar Test App"
+	default n
+
+if CURUVAR_TEST_APP
+
+config CURUVAR_TEST_APP_PROGNAME
+	string "Program Name"
+	default "test_app"
+	---help---
+		This is the name of the program that will be used when the NSH ELF
+		program is installed.
+
+config CURUVAR_TEST_APP_PRIORITY
+	int "Task Priority"
+	default 100
+
+config CURUVAR_TEST_APP_STACKSIZE
+	int "Stack Size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif

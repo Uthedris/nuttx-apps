@@ -8,4 +8,5 @@
 menu "Curuvar Applications"
 source "/Volumes/UsersSSD/craig/Development/GitHub/nuttx/apps/curuvar/i2c_slave_test/Kconfig"
 source "/Volumes/UsersSSD/craig/Development/GitHub/nuttx/apps/curuvar/motor_control/Kconfig"
+source "/Volumes/UsersSSD/craig/Development/GitHub/nuttx/apps/curuvar/test_app/Kconfig"
 endmenu # Curuvar Applications
