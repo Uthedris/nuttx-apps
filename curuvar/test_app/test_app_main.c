@@ -35,7 +35,7 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 
-#include <nuttx/wireless/ieee80211/bcmf_gpio.h>
+#include <arch/board/rp2040_extra_gpio.h>
 
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
@@ -63,22 +63,10 @@ int main( int in_argc, FAR char *in_argv[] )
 
   for (int i = 0; i < 20; ++i)
     {
-      bool value;
-      bool ret;
-
-      bcmf_set_gpio("wlan0", 0, (i & 1) == 0);
+      rp2040_extra_gpio_put(0, (i & 1) == 0);
       usleep(500000);
 
-      ret = bcmf_get_gpio("wlan0", 0, &value);
-
-      if (ret != OK)
-        {
-          printf("ret = %d\n", ret);
-        }
-      else
-        {
-          printf("value = %d\n", value);
-        }
+      printf("value = %d\n", rp2040_extra_gpio_get(0));
     }
 
   return 0;
