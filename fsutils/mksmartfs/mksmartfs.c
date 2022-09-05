@@ -26,8 +26,11 @@
 
 #include <sys/stat.h>
 #include <sys/ioctl.h>
-#include <fcntl.h>
+#include <debug.h>
 #include <errno.h>
+#include <fcntl.h>
+#include <string.h>
+
 #if !defined(CONFIG_DISABLE_MOUNTPOINT)
 #  ifdef CONFIG_FS_SMARTFS
 #    include "fsutils/mksmartfs.h"
@@ -155,6 +158,7 @@ int mksmartfs(FAR const char *pathname, uint16_t sectorsize)
   if (ret != OK)
     {
       ret = -errno;
+      ferr("low level format failed: %d  %s\n", errno, strerror(errno));
       goto errout_with_driver;
     }
 
@@ -164,6 +168,7 @@ int mksmartfs(FAR const char *pathname, uint16_t sectorsize)
   if (ret != OK)
     {
       ret = -errno;
+      ferr("get format failed: %d  %s\n", errno, strerror(errno));
       goto errout_with_driver;
     }
 
@@ -185,6 +190,7 @@ int mksmartfs(FAR const char *pathname, uint16_t sectorsize)
       if (ret != SMARTFS_ROOT_DIR_SECTOR + x)
         {
           ret = -EIO;
+         ferr("allocate sector failed: %d  %s\n", errno, strerror(errno));
           goto errout_with_driver;
         }
 
@@ -198,6 +204,7 @@ int mksmartfs(FAR const char *pathname, uint16_t sectorsize)
       if (ret != OK)
         {
           ret = -EIO;
+          ferr("write sector failed: %d  %s\n", errno, strerror(errno));
           goto errout_with_driver;
         }
     }

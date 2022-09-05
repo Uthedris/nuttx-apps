@@ -138,11 +138,7 @@ static int smart_seek_test(char *filename)
     {
       /* Get random line to seek to */
 
-      index = rand();
-      while (index >= g_line_count)
-        {
-          index -= g_line_count;
-        }
+      index = rand() % g_line_count;
 
       fseek(fd, g_line_pos[index], SEEK_SET);
       fread(readstring, 1, g_line_len[index], fd);
@@ -195,11 +191,16 @@ static int smart_append_test(char *filename)
   fprintf(fd, "This is a test of the append.\n");
   pos = ftell(fd);
 
+  printf("\n\nAdded new line at position %d\n", pos - 30);
+
   /* Now seek to the end of the file and ensure that is where
    * pos is.
    */
 
   fseek(fd, 0, SEEK_END);
+
+  printf("End of file is at position %d\n", ftell(fd));
+
   if (ftell(fd) != pos)
     {
       printf("Error opening for append ... data not at EOF\n");
@@ -207,12 +208,17 @@ static int smart_append_test(char *filename)
 
   /* Now seek to that position and read the data back */
 
-  fseek(fd, 30, SEEK_END);
+  fseek(fd, -30, SEEK_END);
+
+  printf("After seek to end - 30 the position is %d\n", ftell(fd));
+
   fread(readstring, 1, 30, fd);
   readstring[30] = '\0';
   if (strcmp(readstring, "This is a test of the append.\n") != 0)
     {
       printf("\nAppend test failed\n");
+      printf("   Expected->This is a test of the append.\n");
+      printf("   Read    ->%s\n", readstring);
     }
   else
     {
@@ -226,7 +232,7 @@ static int smart_append_test(char *filename)
 /****************************************************************************
  * Name: smart_seek_with_write_test
  *
- * Description: Conducts an append test on the file.
+ * Description: Conducts a seek/write/seek/read test on the file.
  *
  ****************************************************************************/
 
@@ -260,11 +266,7 @@ static int smart_seek_with_write_test(char *filename)
 #if 0
       /* Get a random value */
 
-      index = rand();
-      while (index >= g_line_count)
-        {
-          index -= g_line_count;
-        }
+      index = rand() % g_line_count;
 #endif
 
       /* Read the data into the buffer */
@@ -704,9 +706,12 @@ int main(int argc, FAR char *argv[])
 
   /* Perform a "circular log" test */
 
-  if ((ret = smart_circular_log_test(argv[optind])) < 0)
+  if (g_circ_count > 0)
     {
-      goto err_out_with_mem;
+      if ((ret = smart_circular_log_test(argv[optind])) < 0)
+        {
+          goto err_out_with_mem;
+        }
     }
 
 err_out_with_mem:
